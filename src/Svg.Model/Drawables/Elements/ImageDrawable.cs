@@ -81,7 +81,6 @@ public sealed class ImageDrawable : DrawableBase
 
         var destClip = SKRect.Create(location.X, location.Y, width, height);
         drawable.DestRect = SvgExtensions.CalculateRect(svgImage.AspectRatio, drawable.SrcRect, destClip);
-        drawable.Clip = destClip;
 
         var skClipRect = SvgExtensions.GetClipRect(svgImage.Clip, destClip);
         if (skClipRect is { })
