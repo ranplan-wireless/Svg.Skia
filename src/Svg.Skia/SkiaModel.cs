@@ -1,6 +1,8 @@
 ﻿#if !USE_SKIASHARP
+using System;
 using System.Collections.Generic;
 using ShimSkiaSharp;
+using SKCanvas = SkiaSharp.SKCanvas;
 
 namespace Svg.Skia;
 
@@ -1060,7 +1062,7 @@ public class SkiaModel
         return skPictureRecorder.EndRecording();
     }
 
-    public void Draw(CanvasCommand canvasCommand, SkiaSharp.SKCanvas skCanvas)
+    public void Draw(CanvasCommand canvasCommand, SkiaSharp.SKCanvas skCanvas, bool useHairlineForThinStrokes = false)
     {
         switch (canvasCommand)
         {
@@ -1126,10 +1128,14 @@ public class SkiaModel
             }
             case DrawPathCanvasCommand drawPathCanvasCommand:
             {
-                if (drawPathCanvasCommand.Path is { } && drawPathCanvasCommand.Paint is { })
+                if (drawPathCanvasCommand.Path is not null && drawPathCanvasCommand.Paint is not null)
                 {
                     var path = ToSKPath(drawPathCanvasCommand.Path);
                     var paint = ToSKPaint(drawPathCanvasCommand.Paint);
+
+                    if (paint != null && useHairlineForThinStrokes)
+                        ApplyHairlineForThinStrokes(skCanvas, paint);
+
                     skCanvas.DrawPath(path, paint);
                 }
                 break;
@@ -1175,7 +1181,30 @@ public class SkiaModel
         }
     }
 
-    public void Draw(SKPicture picture, SkiaSharp.SKCanvas skCanvas)
+    private void ApplyHairlineForThinStrokes(SKCanvas skCanvas, SkiaSharp.SKPaint paint)
+    {
+        if (paint is { StrokeWidth: > 0f, Style: SkiaSharp.SKPaintStyle.Stroke or SkiaSharp.SKPaintStyle.StrokeAndFill })
+        {
+            var matrix = skCanvas.TotalMatrix;
+            var scale = Math.Sqrt(
+                Math.Min(matrix.ScaleX * matrix.ScaleX + matrix.SkewY * matrix.SkewY,
+                    matrix.SkewX * matrix.SkewX + matrix.ScaleY * matrix.ScaleY));
+
+            if (scale <= 0f)
+            {
+                scale = 1f;
+            }
+
+            var scaledStrokeWidth = paint.StrokeWidth * scale;
+            if (scaledStrokeWidth < 1f)
+            {
+                paint.IsAntialias = true;
+                paint.StrokeWidth = 0f;
+            }
+        }
+    }
+
+    public void Draw(SKPicture picture, SkiaSharp.SKCanvas skCanvas, bool useHairlineForThinStrokes = false)
     {
         if (picture.Commands is null)
         {
@@ -1184,7 +1213,7 @@ public class SkiaModel
 
         foreach (var canvasCommand in picture.Commands)
         {
-            Draw(canvasCommand, skCanvas);
+            Draw(canvasCommand, skCanvas, useHairlineForThinStrokes);
         }
     }
 }
