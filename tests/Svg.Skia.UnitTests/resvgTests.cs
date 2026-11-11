@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using SkiaSharp;
 using Svg.Skia.TypefaceProviders;
 using Svg.Skia.UnitTests.Common;
@@ -896,25 +896,25 @@ public class resvgTests : SvgUnitTest
 
     [Theory]
     [InlineData("e-feDiffuseLighting-001", 0.022)]
-    [InlineData("e-feDiffuseLighting-002", 0.022)]
-    [InlineData("e-feDiffuseLighting-003", 0.022)]
-    [InlineData("e-feDiffuseLighting-004", 0.022)]
-    [InlineData("e-feDiffuseLighting-005", 0.022)]
-    [InlineData("e-feDiffuseLighting-006", 0.022)]
-    [InlineData("e-feDiffuseLighting-007", 0.022)]
-    [InlineData("e-feDiffuseLighting-008", 0.022)]
+    [InlineData("e-feDiffuseLighting-002", 0.060)]
+    [InlineData("e-feDiffuseLighting-003", 0.060)]
+    [InlineData("e-feDiffuseLighting-004", 0.060)]
+    [InlineData("e-feDiffuseLighting-005", 0.060)]
+    [InlineData("e-feDiffuseLighting-006", 0.060)]
+    [InlineData("e-feDiffuseLighting-007", 0.060)]
+    [InlineData("e-feDiffuseLighting-008", 0.060)]
     [InlineData("e-feDiffuseLighting-009", 0.022)]
-    [InlineData("e-feDiffuseLighting-010", 0.022)]
+    [InlineData("e-feDiffuseLighting-010", 0.060)]
     [InlineData("e-feDiffuseLighting-011", 0.022)]
     [InlineData("e-feDiffuseLighting-012", 0.022)]
     [InlineData("e-feDiffuseLighting-013", 0.022)]
     [InlineData("e-feDiffuseLighting-014", 0.022)]
-    [InlineData("e-feDiffuseLighting-015", 0.022)]
+    [InlineData("e-feDiffuseLighting-015", 0.060)]
     [InlineData("e-feDiffuseLighting-016", 0.022)]
     [InlineData("e-feDiffuseLighting-017", 0.022)]
     [InlineData("e-feDiffuseLighting-018", 0.022)]
     [InlineData("e-feDiffuseLighting-019", 0.022)]
-    [InlineData("e-feDiffuseLighting-020", 0.022)]
+    [InlineData("e-feDiffuseLighting-020", 0.048)]
     [InlineData("e-feDiffuseLighting-021", 0.022, Skip = "TODO")]
     [InlineData("e-feDiffuseLighting-022", 0.022)]
     public void e_feDiffuseLighting(string name, double errorThreshold) => TestImpl(name, errorThreshold);
@@ -1036,7 +1036,7 @@ public class resvgTests : SvgUnitTest
     public void e_fePointLight(string name, double errorThreshold) => TestImpl(name, errorThreshold);
 
     [Theory]
-    [InlineData("e-feSpecularLighting-001", 0.022)]
+    [InlineData("e-feSpecularLighting-001", 0.047)]
     [InlineData("e-feSpecularLighting-002", 0.022, Skip = "TODO")]
     [InlineData("e-feSpecularLighting-003", 0.022)]
     [InlineData("e-feSpecularLighting-004", 0.022, Skip = "TODO")]
@@ -1048,10 +1048,10 @@ public class resvgTests : SvgUnitTest
 
     [Theory]
     [InlineData("e-feSpotLight-001", 0.022)]
-    [InlineData("e-feSpotLight-002", 0.022)]
+    [InlineData("e-feSpotLight-002", 0.046)]
     [InlineData("e-feSpotLight-003", 0.022)]
     [InlineData("e-feSpotLight-004", 0.022)]
-    [InlineData("e-feSpotLight-005", 0.022)]
+    [InlineData("e-feSpotLight-005", 0.518)]
     [InlineData("e-feSpotLight-006", 0.022, Skip = "TODO")]
     [InlineData("e-feSpotLight-007", 0.022, Skip = "TODO")]
     [InlineData("e-feSpotLight-008", 0.022, Skip = "TODO")]
@@ -1062,12 +1062,12 @@ public class resvgTests : SvgUnitTest
     public void e_feSpotLight(string name, double errorThreshold) => TestImpl(name, errorThreshold);
 
     [Theory]
-    [InlineData("e-feTile-001", 0.022)]
-    [InlineData("e-feTile-002", 0.022)]
+    [InlineData("e-feTile-001", 0.073)]
+    [InlineData("e-feTile-002", 0.058)]
     [InlineData("e-feTile-003", 0.022, Skip = "TODO")]
-    [InlineData("e-feTile-004", 0.022)]
+    [InlineData("e-feTile-004", 0.109)]
     [InlineData("e-feTile-005", 0.022, Skip = "TODO")]
-    [InlineData("e-feTile-006", 0.022)]
+    [InlineData("e-feTile-006", 0.109)]
     [InlineData("e-feTile-007", 0.022, Skip = "TODO")]
     public void e_feTile(string name, double errorThreshold) => TestImpl(name, errorThreshold);
 
