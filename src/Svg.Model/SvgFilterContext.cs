@@ -27,6 +27,11 @@ internal class SvgFilterContext
     private static SvgFilterCropRect ToFilterCropRect(SKRect rect) => new(rect);
 #endif
 
+    // Skia 2.88 clamped the spot light exponent to [1, 128]; Skia 3 passes it through, so a negative
+    // or very large exponent (allowed by SVG) would light the whole region or nothing at all.
+    private static float ClampSpotLightExponent(float specularExponent)
+        => float.IsNaN(specularExponent) ? 1f : System.Math.Min(System.Math.Max(specularExponent, 1f), 128f);
+
     private const string SourceAlpha = "SourceAlpha";
 
     private const string BackgroundImage = "BackgroundImage";
@@ -1413,7 +1418,7 @@ internal class SvgFilterContext
                 {
                     var location = GetPoint3(svgSpotLight.X, svgSpotLight.Y, svgSpotLight.Z);
                     var target = GetPoint3(svgSpotLight.PointsAtX, svgSpotLight.PointsAtY, svgSpotLight.PointsAtZ);
-                    var specularExponentSpotLight = svgSpotLight.SpecularExponent;
+                    var specularExponentSpotLight = ClampSpotLightExponent(svgSpotLight.SpecularExponent);
                     var limitingConeAngle = svgSpotLight.LimitingConeAngle;
                     if (float.IsNaN(limitingConeAngle) || limitingConeAngle > 90f || limitingConeAngle < -90f)
                     {
@@ -1646,7 +1651,7 @@ internal class SvgFilterContext
                 {
                     var location = GetPoint3(svgSpotLight.X, svgSpotLight.Y, svgSpotLight.Z);
                     var target = GetPoint3(svgSpotLight.PointsAtX, svgSpotLight.PointsAtY, svgSpotLight.PointsAtZ);
-                    var specularExponentSpotLight = svgSpotLight.SpecularExponent;
+                    var specularExponentSpotLight = ClampSpotLightExponent(svgSpotLight.SpecularExponent);
                     var limitingConeAngle = svgSpotLight.LimitingConeAngle;
                     if (float.IsNaN(limitingConeAngle) || limitingConeAngle > 90f || limitingConeAngle < -90f)
                     {
