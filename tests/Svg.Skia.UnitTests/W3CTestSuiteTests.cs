@@ -1,4 +1,4 @@
-using System.IO;
+﻿using System.IO;
 using Svg.Skia.UnitTests.Common;
 using Xunit;
 
@@ -749,6 +749,7 @@ public class W3CTestSuiteTests
     [WindowsTheory]
     [InlineData("__AJ_Digital_Camera", 0.027)]
     [InlineData("__Telefunken_FuBK_test_pattern", 0.022)]
-    [InlineData("__tiger", 0.076)]
+    // SkiaSharp 3 anti-aliases path edges slightly differently (3.7 % of pixels, all small); measured error 0.0555.
+    [InlineData("__tiger", 0.058)]
     public void Misc(string name, double errorThreshold) => TestImpl(name, errorThreshold);
 }
